@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-selected=$(find $HOME/work $HOME/personal $HOME/personal/rails $HOME/Exercism/ruby $HOME/Exercism/python $HOME -maxdepth 1 -mindepth 1 -d | uniq | fzf)
-name=$(basename $selected)
+selected=$(find $HOME/work $HOME/personal $HOME/personal/rails $HOME/Exercism/ruby $HOME/Exercism/python $HOME/vaults $HOME -maxdepth 1 -mindepth 1 -d | uniq | fzf)
+name=$(basename $selected | tr " " "_" | tr "." "_")
 
 
 echo $selected
@@ -13,7 +13,7 @@ if [[ -z $TMUX ]] && tmux has-session -t=$name 2> /dev/null;  then
     exit 0
 fi
 
-if !  then
+if ! tmux has-session -t=$name 2> /dev/null; then
 	tmux new-session -d -s $name -c $selected
 fi
 
