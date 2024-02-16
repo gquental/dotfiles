@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+selected=$(find $HOME/work $HOME/personal $HOME/personal/rails $HOME/Exercism/ruby $HOME/Exercism/python $HOME -maxdepth 1 -mindepth 1 -d | uniq | fzf)
+name=$(basename $selected)
+
+
+echo $selected
+echo $name
+
+# Attach to session if I'm outside of TMUX and the session exists
+if [[ -z $TMUX ]] && tmux has-session -t=$name 2> /dev/null;  then
+    tmux a -t $name   
+    exit 0
+fi
+
+if !  then
+	tmux new-session -d -s $name -c $selected
+fi
+
+
+
+tmux switch-client -t $name
