@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-selected=$(find $HOME/work $HOME/personal $HOME/personal/rails $HOME/Exercism/ruby $HOME/Exercism/python $HOME/vaults $HOME -maxdepth 1 -mindepth 1 -d | uniq | fzf)
-name=$(basename $selected | tr " " "_" | tr "." "_")
-
+selected=$(find $HOME/work $HOME/personal $HOME/Google\ Drive/Meu\ Drive/50-59\ Projetos/53\ Projetos\ Google $HOME/personal/rails $HOME/Exercism/ruby $HOME/Exercism/python $HOME/vaults $HOME -maxdepth 1 -mindepth 1 -d | uniq | fzf)
+name=$(echo $selected | tr " " "_" | tr "." "_")
+name=$(basename $name)
+selected_path=$(echo $selected | tr " " '\ ')
 
 echo $selected
 echo $name
+echo $selected_path
 
 # Attach to session if I'm outside of TMUX and the session exists
-if [[ -z $TMUX ]] && tmux has-session -t=$name 2> /dev/null;  then
-    tmux a -t $name   
-    exit 0
+if [[ -z $TMUX ]] && tmux has-session -t=$name 2>/dev/null; then
+  tmux a -t $name
+  exit 0
 fi
 
-if ! tmux has-session -t=$name 2> /dev/null; then
-	tmux new-session -d -s $name -c $selected
+if ! tmux has-session -t=$name 2>/dev/null; then
+  tmux new-session -d -s $name -c "$selected_path"
 fi
-
-
 
 tmux switch-client -t $name
